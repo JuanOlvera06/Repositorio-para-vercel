@@ -1,0 +1,6 @@
+### carpetas de node ###
+node_modules/
+### variables de entorno ###
+.env
+### Archivos temporales ###
+.DS_Store
