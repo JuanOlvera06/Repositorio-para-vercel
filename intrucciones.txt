@@ -1,0 +1,29 @@
+Para copiarle al chai ajajajjsfewjbkjrjgjGJRHEJFCEJJ JKRJTI JVNRMJ4
+
+Solo insertar archvios en las carpetas
+    models
+    routes
+    controllers
+
+por cada modulo necesita su Modelo su ruta y su controlador
+
+al terminar cada uno de estos anadir
+EN EL ARCHVIO app.js
+se deb importar algo asi
+import productosroutes from './routes/productos.routes.js' //cambiar el nombrre de productosroutes
+
+debajo de
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors'; // IMPORTANTE Importar 
+import gruposroutes from './routes/gruposroutes.js'
+import productosroutes from './routes/productos.routes.js'
+
+
+despues  abajo de 
+app.use('/api/grupos', gruposroutes)
+
+app.use('/api/productos', productosroutes);
+
+se ingrsa los algo asi
+app.use('/api/productos', productosroutes); se cambiar la palabra prodcutos y el productosroutes por el nombre que se puso en el import
