@@ -125,7 +125,7 @@ export const actualizarEmpleado = async (req, res) => {
   }
 };
 
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs';
 
 export const actualizarEmpleado1 = async (req, res) => {
   try {
@@ -200,9 +200,9 @@ export const actualizarEmpleado1 = async (req, res) => {
           message: "La contraseña debe tener al menos 6 caracteres",
         });
       }
-      // const hash = await bcrypt.hash(contrasena.trim(), 10);
-     // data.contrasena = hash;
-      data.contrasena = contrasena.trim();
+     const hash = await bcrypt.hash(contrasena.trim(), 10);
+     data.contrasena = hash;
+     // data.contrasena = contrasena.trim();
     }
 
     const empleadoActualizado = await grupoModelo.actualizarEmpleado(data);
