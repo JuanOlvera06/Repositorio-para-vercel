@@ -2,6 +2,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import gruposroutes from './routes/gruposroutes.js'
+import productosroutes from './routes/productos.routes.js'
 
 
 
@@ -21,7 +22,7 @@ app.use(express.json())
 // defonimos las rutas que voy a implementar
 app.use('/api/grupos', gruposroutes)
 
-app.use('/api/productos', productosRoutes);
+app.use('/api/productos', productosroutes);
 
 
 app.get('/', (req, res)=>{

@@ -18,10 +18,7 @@ if (start === undefined || start === "") start = "0";
       });
     }
 
-    const resultado = await productoModelo.obtenerProductos({
-      limit: limitNumber,
-      start: startNumber,
-    });
+   const resultado = await productoModelo.obtenerProductos(limitNumber, startNumber);
 
     res.status(200).json({
       message: "Productos obtenidos correctamente",
