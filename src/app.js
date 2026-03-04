@@ -1,8 +1,10 @@
 //importamos la libreria
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors'; // 👈 IMPORTANTE
 import gruposroutes from './routes/gruposroutes.js'
 import productosroutes from './routes/productos.routes.js'
+
 
 
 
@@ -15,6 +17,7 @@ dotenv.config()
 //definimos nuestro puerto  //sugierto 
 const port= process.env.PORT || 3000
 
+app.use(cors());
 //definimos una peticion al servidor
 // definimos un midlewere para poder implementar jaason en nuestra apo
 app.use(express.json())
