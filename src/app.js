@@ -21,6 +21,8 @@ app.use(express.json())
 // defonimos las rutas que voy a implementar
 app.use('/api/grupos', gruposroutes)
 
+app.use('/api/productos', productosRoutes);
+
 
 app.get('/', (req, res)=>{
     res.send("Esta es mi primera vez se gentil")
