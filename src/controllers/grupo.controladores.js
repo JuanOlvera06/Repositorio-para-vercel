@@ -1,4 +1,5 @@
 import * as grupoModelo from "../models/grupo.model.js";
+import bcrypt from 'bcryptjs';
 
 export const obtenerEmpleados = async (req, res) => {
   try {
@@ -125,7 +126,7 @@ export const actualizarEmpleado = async (req, res) => {
   }
 };
 
-import bcrypt from 'bcryptjs';
+
 
 export const actualizarEmpleado1 = async (req, res) => {
   try {
