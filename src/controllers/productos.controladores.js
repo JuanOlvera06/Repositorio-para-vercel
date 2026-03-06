@@ -159,7 +159,7 @@ export const borrarProducto = async (req, res) => {
     }
    
 
-        const resultado = await productoModelo.eliminarProducto({ id: idNum });
+   const resultado = await productoModelo.eliminarProducto(idNum);
 
     if (resultado.affectedRows === 0) {
       return res.status(404).json({
