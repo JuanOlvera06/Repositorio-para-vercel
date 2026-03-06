@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Eliminar Producto</title>
+</head>
+<body>
+
+<h2>Eliminar producto</h2>
+
+<button onclick="eliminarProducto()">Eliminar Producto</button>
+
+<script>
+
+const eliminarProducto = () => {
+
+fetch("https://repositorio-para-vercel-tawny.vercel.app/api/productos/80", {
+    method: "DELETE",
+    headers: {
+        "Content-Type": "application/json"
+    }
+})
+.then(res => res.json())
+.then(data => {
+    console.log("Respuesta:", data);
+    alert("Producto eliminado");
+})
+.catch(error => {
+    console.error("Error:", error);
+});
+
+}
+
+</script>
+
+</body>
+</html>

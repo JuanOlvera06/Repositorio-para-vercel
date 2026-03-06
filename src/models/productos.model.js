@@ -37,8 +37,25 @@ export const actualizarProducto = async ({  id_producto,  id_categoria,  nombre_
     [id_categoria, nombre_producto, precio, unidad_medida, calibre, metros, kg, color, ced, ton, cm, ImagenesProducto, id_producto]
   );
 
-  return {
-    id: id_producto,
+  //return {
+   // id: id_producto,
+   // affectedRows: result.affectedRows
+  //};
+
+   return {
+    id_producto,
+    id_categoria,
+    nombre_producto,
+    precio,
+    unidad_medida,
+    calibre,
+    metros,
+    kg,
+    color,
+    ced,
+    ton,
+    cm,
+    ImagenesProducto,
     affectedRows: result.affectedRows
   };
 }
