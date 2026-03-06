@@ -82,6 +82,8 @@ export const crearProducto = async (req, res) => {
 };
 
 
+
+
 export const actualizarProducto = async (req, res) => {
   try {
 
