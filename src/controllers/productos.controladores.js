@@ -144,3 +144,37 @@ export const actualizarProducto = async (req, res) => {
     });
   }
 };
+
+
+export const borrarProducto = async (req, res) => {
+  try {
+
+      const { id } = req.params;
+
+ const idNum = Number(id);
+ if (!Number.isInteger(idNum) || idNum <= 0) {
+      return res.status(400).json({
+        message: "El id del producto debe ser un número válido"
+      });
+    }
+   
+
+        const resultado = await productoModelo.eliminarProducto({ id: idNum });
+
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Producto no encontrado"
+      });
+    }
+
+    res.json({
+      message: "Producto eliminado correctamente",
+      data: resultado
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
+  }
+};
