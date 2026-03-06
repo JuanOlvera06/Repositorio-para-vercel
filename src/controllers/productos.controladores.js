@@ -37,27 +37,29 @@ if (start === undefined || start === "") start = "0"; //esto mas que nada por si
 
 export const crearProducto = async (req, res) => {
   try {
-    const {
-      id_categoria,
-      nombre_producto,
-      precio,
-      unidad_medida,
-      calibre,
-      metros,
-      kg,
-      color,
-      ced,
-      ton,
-      cm,
-      ImagenesProducto
+    const {  id_categoria,  nombre_producto,  precio,  unidad_medida,  calibre,  metros,  kg,  color,  ced,  ton,  cm,  ImagenesProducto
     } = req.body;
 
-    //Validar campos obligatorios (ejemplo básicos)
-    if (!id_categoria || !nombre_producto || !precio) {
+    //Validar campos obligatorios ()
+      if (
+      id_categoria === undefined ||
+      nombre_producto === undefined ||
+      precio === undefined ||
+      unidad_medida === undefined ||
+      calibre === undefined ||
+      metros === undefined ||
+      kg === undefined ||
+      color === undefined ||
+      ced === undefined ||
+      ton === undefined ||
+      cm === undefined ||
+      ImagenesProducto === undefined
+    ) {
       return res.status(400).json({
-        message: "id_categoria, nombre_producto y precio son obligatorios",
+        message: "Todos los campos son obligatorios",
       });
     }
+
 
     // Validar que precio sea número
     if (isNaN(parseFloat(precio))) {
@@ -66,19 +68,7 @@ export const crearProducto = async (req, res) => {
       });
     }
 
-    const resultado = await productoModelo.crearProducto({
-      id_categoria,
-      nombre_producto,
-      precio,
-      unidad_medida,
-      calibre,
-      metros,
-      kg,
-      color,
-      ced,
-      ton,
-      cm,
-      ImagenesProducto
+    const resultado = await productoModelo.crearProducto({  id_categoria,  nombre_producto, precio, unidad_medida,  calibre,  metros, kg,  color,  ced, ton, cm, ImagenesProducto
     });
 
     res.status(201).json({
@@ -88,5 +78,67 @@ export const crearProducto = async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+
+export const actualizarProducto = async (req, res) => {
+  try {
+
+      const { id } = req.params;
+
+    const {  id_categoria,  nombre_producto,  precio,  unidad_medida,  calibre,  metros,  kg,  color,  ced,  ton,  cm,  ImagenesProducto
+    } = req.body;
+
+ const idNum = Number(id);
+ if (!Number.isInteger(idNum) || idNum <= 0) {
+      return res.status(400).json({
+        message: "El id del producto debe ser un número válido"
+      });
+    }
+    if (
+      id_categoria === undefined ||
+      nombre_producto === undefined ||
+      precio === undefined ||
+      unidad_medida === undefined ||
+      calibre === undefined ||
+      metros === undefined ||
+      kg === undefined ||
+      color === undefined ||
+      ced === undefined ||
+      ton === undefined ||
+      cm === undefined ||
+      ImagenesProducto === undefined
+    ) {
+      return res.status(400).json({
+        message: "Todos los campos son obligatorios"
+      });
+    }
+
+    // Validar que precio sea número
+    if (isNaN(parseFloat(precio))) {
+      return res.status(400).json({
+        message: "El precio debe ser un número válido"
+      });
+    }
+
+    const resultado = await productoModelo.actualizarProducto({  id_producto: idNum, id_categoria, nombre_producto, precio, unidad_medida, calibre, metros, kg, color, ced, ton,  cm, ImagenesProducto
+    });
+
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({
+        message: "Producto no encontrado"
+      });
+    }
+
+    res.json({
+      message: "Producto actualizado correctamente",
+      data: resultado
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      error: error.message
+    });
   }
 };

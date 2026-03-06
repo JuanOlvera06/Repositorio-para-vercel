@@ -25,3 +25,4 @@ export const crearProducto = async ({ id_categoria, nombre_producto, precio, uni
   return { id: result.insertId, id_categoria, nombre_producto, precio, unidad_medida, calibre, metros, kg, color, ced, ton, cm, ImagenesProducto };
 }
 
+
