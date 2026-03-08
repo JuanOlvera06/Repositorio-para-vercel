@@ -41,7 +41,7 @@ export const crearEmpleado = async (req, res) => {
       amaterno,
       correo,
       telefono,
-      passwordHash,
+      contrasena: passwordHash,
       tipo_usuario,
       departamento,
       puesto,
@@ -147,7 +147,7 @@ export const borrarEmpleado = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const { correo, contrasena } = req.body;
-        const usuario = await usuarioModel.findUsuarioByEmail(correo);
+        const usuario = await grupoModelo.findUsuarioByEmail(correo);
         if (!usuario) return res.status(401).json({ message: 'Credenciales inválidas' });
 
         const esValida = await bcrypt.compare(contrasena, usuario.Contrasena);
