@@ -1,6 +1,6 @@
 
 import { Router } from 'express';
-import * as ctrl from '../controllers/MsVsPE.controladores.js';
+import * as ctrl from '../controllers/misvis.controladores.js';
 
 const router = Router();
 

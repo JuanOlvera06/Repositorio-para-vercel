@@ -1,4 +1,4 @@
-import * as MsVsPe from "../models/MsVsPE.models.js";
+import * as MsVsPe from "../models/misvis.model.js";
 
 export const obtenerMision_Vision = async (req, res) => {
   try {
