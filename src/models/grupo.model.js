@@ -35,47 +35,40 @@ export const crearEmpleado = async ({ nombre, apaterno, amaterno, correo, telefo
 }
 
 // Update
-export const actualizarEmpleado = async ({id, nombre, apaterno, amaterno,  correo, telefono,contrasena, tipo_usuario,departamento, puesto
+export const actualizarEmpleado = async ({
+  id, nombre, apaterno, amaterno, correo, telefono,
+  contrasena, tipo_usuario, departamento, puesto
 }) => {
 
-  const [result] = await db.query(
-    `UPDATE empleados SET 
-      Nombre=?,
-      Apellido_Paterno=?,
-      Apellido_Materno=?,
-      Correo=?,
-      Telefono=?,
-      Contrasena=MD5(?),
-      Id_Tipo_Usuario=?,
-      Id_Departamento=?,
-      Id_Puesto=?
-     WHERE Id_Empleado=?`,
-    [
-      nombre,
-      apaterno,
-      amaterno,
-      correo,
-      telefono,
-      contrasena,
-      tipo_usuario,
-      departamento,
-      puesto,
-      id
-    ]
-  );
-    return {
-    affectedRows: result.affectedRows,
-    id,
-    nombre,
-    apaterno,
-    amaterno,
-    correo,
-    telefono,
-    tipo_usuario,
-    departamento,
-    puesto
-  };
+  if (contrasena && contrasena.trim() !== "") {
+
+    const [result] = await db.query(
+      `UPDATE empleados SET 
+        Nombre=?, Apellido_Paterno=?, Apellido_Materno=?, Correo=?, Telefono=?,
+        Contrasena=MD5(?),
+        Id_Tipo_Usuario=?, Id_Departamento=?, Id_Puesto=?
+       WHERE Id_Empleado=?`,
+      [nombre, apaterno, amaterno, correo, telefono, contrasena, tipo_usuario, departamento, puesto, id]
+    );
+
+    return { affectedRows: result.affectedRows };
+
+  } else {
+
+    const [result] = await db.query(
+      `UPDATE empleados SET 
+        Nombre=?, Apellido_Paterno=?, Apellido_Materno=?, Correo=?, Telefono=?,
+        Id_Tipo_Usuario=?, Id_Departamento=?, Id_Puesto=?
+       WHERE Id_Empleado=?`,
+      [nombre, apaterno, amaterno, correo, telefono, tipo_usuario, departamento, puesto, id]
+    );
+
+    return { affectedRows: result.affectedRows };
+
+  }
 };
+
+
 // el echo de que una funcion sea asicnrona qqieme
 export const borrarEmpleado = async ({ id }) => {
   const [result] = await db.query(
@@ -86,3 +79,10 @@ export const borrarEmpleado = async ({ id }) => {
 }
 
 
+export const findUsuarioByEmail = async (email) => {
+    const [rows] = await db.query(
+        'SELECT Id_Empleado, Correo, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Id_Tipo_Usuario FROM empleados WHERE Correo = ?',
+        [email]
+    );
+    return rows[0];
+};
