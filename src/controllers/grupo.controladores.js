@@ -41,7 +41,7 @@ export const crearEmpleado = async (req, res) => {
       amaterno,
       correo,
       telefono,
-      passwordHash,
+      contrasena: passwordHash,
       tipo_usuario,
       departamento,
       puesto,
