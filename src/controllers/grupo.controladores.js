@@ -146,8 +146,8 @@ export const borrarEmpleado = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const { coreo, contrasena } = req.body;
-        const usuario = await usuarioModel.findUsuarioByEmail(email);
+        const { correo, contrasena } = req.body;
+        const usuario = await usuarioModel.findUsuarioByEmail(correo);
         if (!usuario) return res.status(401).json({ message: 'Credenciales inválidas' });
 
         const esValida = await bcrypt.compare(contrasena, usuario.Contrasena);

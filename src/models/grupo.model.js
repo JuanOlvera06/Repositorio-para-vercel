@@ -20,7 +20,7 @@ export const crearEmpleado = async ({ nombre, apaterno, amaterno, correo, telefo
     `INSERT INTO empleados 
             (Nombre, Apellido_Paterno, Apellido_Materno, Correo, Telefono, Contrasena, 
             Id_Tipo_Usuario, Id_Departamento, Id_Puesto)
-            VALUES (?, ?, ?, ?, ?, MD5(?), ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [nombre,
             apaterno,
             amaterno,
@@ -45,7 +45,7 @@ export const actualizarEmpleado = async ({
     const [result] = await db.query(
       `UPDATE empleados SET 
         Nombre=?, Apellido_Paterno=?, Apellido_Materno=?, Correo=?, Telefono=?,
-        Contrasena=MD5(?),
+        Contrasena=(?),
         Id_Tipo_Usuario=?, Id_Departamento=?, Id_Puesto=?
        WHERE Id_Empleado=?`,
       [nombre, apaterno, amaterno, correo, telefono, contrasena, tipo_usuario, departamento, puesto, id]
