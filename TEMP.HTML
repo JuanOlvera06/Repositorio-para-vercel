@@ -2,31 +2,68 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Eliminar Producto</title>
+<title>Actualizar Producto</title>
 </head>
 <body>
 
-<h2>Eliminar producto</h2>
+<h2>Actualizar producto</h2>
 
-<button onclick="eliminarProducto()">Eliminar Producto</button>
+<button onclick="actualizarProducto()">Actualizar Producto</button>
 
 <script>
 
-const eliminarProducto = () => {
+const actualizarProducto = () => {
 
-fetch("https://repositorio-para-vercel-tawny.vercel.app/api/productos/80", {
-    method: "DELETE",
+fetch("https://repositorio-para-vercel-tawny.vercel.app/api/productos/113", {
+    method: "PUT",
     headers: {
         "Content-Type": "application/json"
-    }
+    },
+    body: JSON.stringify({
+        id_categoria: 16,
+        nombre_producto: "Perfil Galvanizado",
+        precio: 940.5,
+        unidad_medida: "pieza",
+        calibre: "32",
+        metros: 15.5,
+        kg: 15,
+        color: "rojo",
+        ced: "acero",
+        ton: 0.1,
+        cm: 1.9,
+        ImagenesProducto: "https://images.vercel.com/producto-test.jpg"
+    })
 })
 .then(res => res.json())
 .then(data => {
-    console.log("Respuesta:", data);
-    alert("Producto eliminado");
+
+console.log("Respuesta:", data);
+
+const p = data.data;
+
+alert(
+data.message + "\n\n" +
+
+"ID Producto: " + p.id_producto + "\n" +
+"Categoria: " + p.id_categoria + "\n" +
+"Nombre: " + p.nombre_producto + "\n" +
+"Precio: " + p.precio + "\n" +
+"Unidad: " + p.unidad_medida + "\n" +
+"Calibre: " + p.calibre + "\n" +
+"Metros: " + p.metros + "\n" +
+"Kg: " + p.kg + "\n" +
+"Color: " + p.color + "\n" +
+"Ced: " + p.ced + "\n" +
+"Ton: " + p.ton + "\n" +
+"Cm: " + p.cm + "\n" +
+"Imagen: " + p.ImagenesProducto + "\n" +
+"Filas afectadas: " + p.affectedRows
+);
+
 })
 .catch(error => {
-    console.error("Error:", error);
+console.error("Error:", error);
+alert("Error al actualizar el producto");
 });
 
 }
