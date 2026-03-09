@@ -16,7 +16,7 @@ export const esEnteroPositivo = (valor) => {
     return true;
 };
 
-
+//KAMINARI
 // ===============================
 // VALIDAR CORREO
 // ===============================
