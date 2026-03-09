@@ -15,7 +15,7 @@ export const obtenerProductos = async (limit = 10, start = 0) => {
 
   return rows;
 };
-
+//
 export const crearProducto = async ({ id_categoria, nombre_producto, precio, unidad_medida, calibre, metros, kg, color, ced, ton, cm, ImagenesProducto }) => {
   const [result] = await db.query(
     `  INSERT INTO productos (id_categoria, nombre_producto, precio, unidad_medida, calibre, metros, kg, color, ced, ton, cm, ImagenesProducto)
