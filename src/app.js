@@ -7,7 +7,7 @@ import productosroutes from './routes/productos.routes.js'
 import MsVsPEroutes from './routes/misvisroutes.js'
 
 
-//crear el objeto de express para nuestra alicacion
+//crear el objeto de express para nuestra alicacion 
 const app=express();
 
 //configuramos el acceso al archivo , .env
