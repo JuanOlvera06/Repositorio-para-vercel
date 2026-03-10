@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
+import env from 'dotenv';
 
+env.config();
 export const verificarToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     
