@@ -7,7 +7,7 @@ export const obtenerFaltas = async (fechaHoy) => {
         SELECT COUNT(*) AS faltasEnero 
         FROM incidencias 
         WHERE Id_Tipo_Incidencia = 1 
-        AND Fecha >= '2025-01-01' 
+        AND Fecha >= '2026-01-01' 
         AND Fecha <= '2026-01-31';
     `);
 
