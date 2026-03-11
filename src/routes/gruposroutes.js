@@ -12,4 +12,11 @@ router.delete('/:id',verificarToken, ctrl.borrarEmpleado);
 router.post('/login', ctrl.login);
 router.post('/register', ctrl.crearEmpleado);
 
+
+router.get('/departamentos', verificarToken, ctrl.obtenerDepartamentos);
+
+router.get('/puestos', verificarToken, ctrl.obtenerPuestos);
+
+router.post('/empleado-info', verificarToken, ctrl.obtenerPuestoDepartamentoEmpleado);
+
 export default router;
