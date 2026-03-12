@@ -2,6 +2,7 @@ import * as grupoModelo from "../models/grupo.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as validar from '../utils/validaciones.js';
+import e from "express";
 
 export const obtenerEmpleados = async (req, res) => {
   try {
@@ -260,7 +261,7 @@ export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
 
   try {
 
-    const { id } = req.body;
+    const { id } = req.body; //checar para que sea params
 
     if (!validar.esEnteroPositivo(id)) {
       return res.status(400).json({
@@ -286,3 +287,27 @@ export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
   }
 
 };
+
+
+export const reporteEmpleado = async (req, res) => {
+
+  try {
+    const { id, inicio, fin } = req.query;
+
+    if (!validar.esEnteroPositivo(id)) {
+      return res.status(400).json({
+        message: "El id debe ser un número entero positivo"
+      });
+    };
+    const reporte = await grupoModelo.reporteEmpleado(id, inicio, fin);
+
+    res.status(200).json({
+      id, 
+      inicio,
+      fin,
+      reporte
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

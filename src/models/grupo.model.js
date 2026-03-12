@@ -144,3 +144,11 @@ export const obtenerPuestoDepartamentoEmpleado = async (idEmpleado) => {
 
   return rows;
 };
+
+export const reporteEmpleado = async (id, inicio, fin) =>{
+  const [rows] = await db.query(`CALL sp_reporte_empleado_completo(?, ?, ?)`,
+    [id, inicio, fin]
+  );
+
+  return rows[0]; // mysql devuelve arrays anidados en procedimientos
+};
