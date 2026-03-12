@@ -3,15 +3,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as validar from '../utils/validaciones.js';
 
-//export const obtenerEmpleados = async (req, res) => {
-  //try {
-    //const grupos = await grupoModelo.obtenerEmpleados();
-    //res.status(200).json(grupos);
-  //} catch (error) {
-    //res.status(500).json({ error: error.message });
-  //}
-//};
-
 export const obtenerEmpleados = async (req, res) => {
   try {
     let { limit, start } = req.query;
@@ -46,6 +37,23 @@ export const obtenerEmpleados = async (req, res) => {
   }
 };
 
+export const obtenerEmpleadoPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const empleado = await grupoModelo.obtenerEmpleadoPorId(id);
+
+    if (!validar.esEnteroPositivo(id)) {
+      return res.status(404).json({
+        message: "Empleado no encontrado o id inválido",
+      });
+    }
+
+    res.status(200).json(empleado);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const crearEmpleado = async (req, res) => {
   try {

@@ -14,6 +14,18 @@ export const obtenerEmpleados = async (limit, start) => {
     return rows
 }
 
+export const obtenerEmpleadoPorId = async (id) => {
+  const [rows] = await db.query(
+    `SELECT e.Id_Empleado, e.Nombre, e.Apellido_Paterno, e.Apellido_Materno, 
+            e.Correo, e.Telefono, d.Departamento, p.Puesto, t.Usuario from empleados e
+            INNER JOIN departamentos d ON e.Id_Departamento = d.Id_Departamento
+            INNER JOIN puestos p ON e.Id_Puesto = p.Id_Puesto
+            INNER JOIN tipo_usuario t ON e.Id_Tipo_Usuario = t.Id_Tipo_Usuario
+            WHERE e.Id_Empleado = ?`, [id]);
+  return rows[0];
+};
+
+
 //Insert
 export const crearEmpleado = async ({ nombre, apaterno, amaterno, correo, telefono, contrasena, tipo_usuario, departamento, puesto }) => {
   const [result] = await db.query(
@@ -78,7 +90,7 @@ export const borrarEmpleado = async ({ id }) => {
   return { id, affectedRows: result.affectedRows  };
 }
 
-
+// OBTENER USUARIO POR CORREO
 export const findUsuarioByEmail = async (email) => {
     const [rows] = await db.query(
         'SELECT Id_Empleado, Correo, Contrasena, Nombre, Apellido_Paterno, Apellido_Materno, Id_Tipo_Usuario FROM empleados WHERE Correo = ?',
@@ -87,7 +99,7 @@ export const findUsuarioByEmail = async (email) => {
     return rows[0];
 };
 
-
+// OBTENER DEPARTAMENTOS|
 export const obtenerDepartamentos = async () => {
 
   const [rows] = await db.query(`
@@ -98,9 +110,8 @@ export const obtenerDepartamentos = async () => {
 };
 
 
-// ===============================
+
 // OBTENER PUESTOS
-// ===============================
 export const obtenerPuestos = async () => {
 
   const [rows] = await db.query(`
@@ -111,10 +122,9 @@ export const obtenerPuestos = async () => {
 };
 
 
-// ===============================
+
 // OBTENER PUESTO Y DEPARTAMENTO
 // DE UN EMPLEADO
-// ===============================
 export const obtenerPuestoDepartamentoEmpleado = async (idEmpleado) => {
 
   const [rows] = await db.query(`

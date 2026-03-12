@@ -19,4 +19,6 @@ router.get('/puestos', verificarToken, ctrl.obtenerPuestos);
 
 router.post('/empleado-info', verificarToken, ctrl.obtenerPuestoDepartamentoEmpleado);
 
+router.get('/empleados/:id', verificarToken, ctrl.obtenerEmpleadoPorId);
+
 export default router;
