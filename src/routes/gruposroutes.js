@@ -13,6 +13,7 @@ router.post('/login', ctrl.login);
 router.post('/register', ctrl.crearEmpleado);
 
 
+
 router.get('/departamentos', verificarToken, ctrl.obtenerDepartamentos);
 
 router.get('/puestos', verificarToken, ctrl.obtenerPuestos);
