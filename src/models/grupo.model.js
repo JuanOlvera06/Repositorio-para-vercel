@@ -152,3 +152,11 @@ export const reporteEmpleado = async (id, inicio, fin) =>{
 
   return rows[0]; // mysql devuelve arrays anidados en procedimientos
 };
+
+export const reporteDepartamento = async (id, inicio, fin) =>{
+  const [rows] = await db.query(`CALL sp_reporte_departamento_completo(?, ?, ?)`,
+    [id, inicio, fin]
+  );
+
+  return rows[0]; // mysql devuelve arrays anidados en procedimientos
+};

@@ -23,4 +23,6 @@ router.get('/empleados/:id', verificarToken, ctrl.obtenerEmpleadoPorId);
 
 router.get('/reporte-empleado', verificarToken, ctrl.reporteEmpleado);
 
+router.get('/reporte-departamento', verificarToken, ctrl.reporteDepartamento);
+
 export default router;

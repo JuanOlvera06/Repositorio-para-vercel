@@ -311,3 +311,27 @@ export const reporteEmpleado = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 }
+
+
+export const reporteDepartamento = async (req, res) => {
+
+  try {
+    const { id, inicio, fin } = req.query;
+
+    if (!validar.esEnteroPositivo(id)) {
+      return res.status(400).json({
+        message: "El id debe ser un número entero positivo"
+      });
+    };
+    const reporte = await grupoModelo.reporteDepartamento(id, inicio, fin);
+
+    res.status(200).json({
+      id, 
+      inicio,
+      fin,
+      reporte
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
