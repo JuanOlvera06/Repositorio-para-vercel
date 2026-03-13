@@ -6,6 +6,7 @@ import gruposroutes from './routes/gruposroutes.js'
 import productosroutes from './routes/productos.routes.js'
 import MsVsPEroutes from './routes/misvisroutes.js'
 import incidenciasroutes from './routes/incidencias.routes.js'
+import terminosroutes from './routes/terminos.routes.js';
 
 
 //crear el objeto de express para nuestra alicacion 
@@ -32,6 +33,8 @@ app.use('/api/productos', productosroutes);
 app.use('/api/misvis', MsVsPEroutes);
 
 app.use('/api/incidencias', incidenciasroutes);
+
+app.use('/api/terminos',terminosroutes);
 
 
 app.get('/', (req, res)=>{
