@@ -8,7 +8,7 @@ export const obtenerProductos = async (limit = 10, start = 0) => {
             c.nombre_categoria
      FROM productos p
      LEFT JOIN categoria c 
-       ON p.id_categoria = c.id_categoria
+       ON p.id_categoria = c.id_categoria ORDER BY p.id_producto DESC
      LIMIT ? OFFSET ?`,
     [Number(limit), Number(start)]
   );
@@ -90,7 +90,7 @@ export const obtenerProductosPorCategoria = async (idCategoria) => {
       ImagenesProducto
     FROM productos
     WHERE id_categoria = ?
-    ORDER BY nombre_producto ASC
+    ORDER BY nombre_producto DESC
   `, [idCategoria]);
 
   return rows;
