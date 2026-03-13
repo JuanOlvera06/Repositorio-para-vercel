@@ -70,3 +70,28 @@ export const eliminarProducto = async (id_producto) => {
     affectedRows: result.affectedRows
   };
 }
+
+// Obtiene solo los productos de una categoría específica
+export const obtenerProductosPorCategoria = async (idCategoria) => {
+  const [rows] = await db.query(`
+    SELECT 
+      id_producto,
+      id_categoria,
+      nombre_producto,
+      precio,
+      unidad_medida,
+      calibre,
+      metros,
+      kg,
+      color,
+      ced,
+      ton,
+      cm,
+      ImagenesProducto
+    FROM productos
+    WHERE id_categoria = ?
+    ORDER BY nombre_producto ASC
+  `, [idCategoria]);
+
+  return rows;
+};
