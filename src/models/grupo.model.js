@@ -121,6 +121,15 @@ export const obtenerPuestos = async () => {
   return rows;
 };
 
+export const obtenerTiposUsuario = async () => {
+
+  const [rows] = await db.query(`
+      SELECT * FROM tipo_usuario
+  `);
+
+  return rows;
+};
+
 
 
 // OBTENER PUESTO Y DEPARTAMENTO

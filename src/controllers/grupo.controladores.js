@@ -253,6 +253,25 @@ export const obtenerPuestos = async (req, res) => {
 };
 
 
+export const obtenerTiposUsuario = async (req, res) => {
+
+  try {
+
+    const resultado = await grupoModelo.obtenerTiposUsuario();
+
+    res.status(200).json({
+      message: "Tipos de usuario obtenidos correctamente",
+      total: resultado.length,
+      data: resultado
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+};
+
+
 // ===============================
 // OBTENER PUESTO Y DEPARTAMENTO
 // DE UN EMPLEADO
