@@ -10,7 +10,7 @@ router.put('/:id',  verificarToken, ctrl.actualizarEmpleado);
 router.delete('/:id',verificarToken, ctrl.borrarEmpleado);
 //router.post('/', ctrl.crearEmpleado);
 router.post('/login', ctrl.login);
-router.post('/register', ctrl.crearEmpleado);
+router.post('/register', verificarToken, ctrl.crearEmpleado);
 
 
 
