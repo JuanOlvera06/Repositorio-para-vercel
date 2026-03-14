@@ -20,7 +20,7 @@ router.get('/puestos', verificarToken, ctrl.obtenerPuestos);
 
 router.get('/tipos-usuario', verificarToken, ctrl.obtenerTiposUsuario);
 
-router.post('/empleado-info', verificarToken, ctrl.obtenerPuestoDepartamentoEmpleado);
+router.get('/empleado-value/:id', verificarToken, ctrl.obtenerEmpleadoValue);
 
 router.get('/empleados/:id', verificarToken, ctrl.obtenerEmpleadoPorId);
 

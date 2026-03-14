@@ -276,11 +276,11 @@ export const obtenerTiposUsuario = async (req, res) => {
 // OBTENER PUESTO Y DEPARTAMENTO
 // DE UN EMPLEADO
 // ===============================
-export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
+export const obtenerEmpleadoValue = async (req, res) => {
 
   try {
 
-    const { id } = req.body; //checar para que sea params
+    const { id } = req.params;
 
     if (!validar.esEnteroPositivo(id)) {
       return res.status(400).json({
@@ -288,7 +288,7 @@ export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
       });
     }
 
-    const resultado = await grupoModelo.obtenerPuestoDepartamentoEmpleado(id);
+    const resultado = await grupoModelo.obtenerEmpleadoValue(id);
 
     if (resultado.length === 0) {
       return res.status(404).json({
@@ -297,7 +297,7 @@ export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
     }
 
     res.status(200).json({
-      message: "Información obtenida correctamente",
+      message: "Empleado obtenido correctamente",
       data: resultado[0]
     });
 
@@ -306,7 +306,6 @@ export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
   }
 
 };
-
 
 export const reporteEmpleado = async (req, res) => {
 
