@@ -138,6 +138,7 @@ export const obtenerEmpleadoValue = async (idEmpleado) => {
 
   const [rows] = await db.query(`
         SELECT 
+        Id_Empleado,
         Nombre,
         Apellido_Paterno,
         Apellido_Materno,
