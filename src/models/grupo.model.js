@@ -141,6 +141,8 @@ export const obtenerEmpleadoValue = async (idEmpleado) => {
         Nombre,
         Apellido_Paterno,
         Apellido_Materno,
+        Correo,
+        Telefono,
         Id_Puesto,
         Id_Departamento,
         Id_Tipo_Usuario
