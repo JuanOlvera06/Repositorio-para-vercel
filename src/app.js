@@ -8,7 +8,7 @@ import MsVsPEroutes from './routes/misvisroutes.js'
 import incidenciasroutes from './routes/incidencias.routes.js'
 import terminosroutes from './routes/terminos.routes.js';
 import perfilRoutes from './routes/perfil.routes.js';
-
+import preguntasRoutes from './routes/preguntas.routes.js';
 
 //crear el objeto de express para nuestra alicacion 
 const app=express();
@@ -39,6 +39,8 @@ app.use('/api/incidencias', incidenciasroutes);
 app.use('/api/terminos',terminosroutes);
 
 app.use('/api/perfil', perfilRoutes);
+
+app.use('/api/preguntas', preguntasRoutes);
 
 app.get('/', (req, res)=>{
     res.send("Esta es mi primera vez se gentil")
