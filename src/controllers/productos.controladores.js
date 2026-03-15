@@ -197,3 +197,27 @@ export const borrarProducto = async (req, res) => {
     });
   }
 };
+
+// GET /api/productos/categoria/:id  → Productos de una categoría específica
+export const obtenerProductosPorCategoria = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ error: "ID de categoría inválido" });
+    }
+
+    const productos = await productoModelo.obtenerProductosPorCategoria(parseInt(id));
+
+    res.status(200).json({
+      categoria_id: parseInt(id),
+      total_productos: productos.length,
+      productos: productos
+    });
+  } catch (error) {
+    console.error("Error en obtenerProductosPorCategoria:", error);
+    res.status(500).json({
+      error: "Error al cargar los productos de esta categoría"
+    });
+  }
+};

@@ -121,25 +121,34 @@ export const obtenerPuestos = async () => {
   return rows;
 };
 
+export const obtenerTiposUsuario = async () => {
+
+  const [rows] = await db.query(`
+      SELECT * FROM tipo_usuario
+  `);
+
+  return rows;
+};
+
 
 
 // OBTENER PUESTO Y DEPARTAMENTO
 // DE UN EMPLEADO
-export const obtenerPuestoDepartamentoEmpleado = async (idEmpleado) => {
+export const obtenerEmpleadoValue = async (idEmpleado) => {
 
   const [rows] = await db.query(`
         SELECT 
-        e.Nombre,
-        e.Apellido_Paterno,
-        e.Apellido_Materno,
-        p.Puesto,
-        d.Departamento
-        FROM empleados e
-        LEFT JOIN puestos p 
-        ON e.Id_Puesto = p.Id_Puesto
-        LEFT JOIN departamentos d 
-        ON d.Id_Departamento = e.Id_Departamento
-        WHERE e.Id_Empleado = ?
+        Id_Empleado,
+        Nombre,
+        Apellido_Paterno,
+        Apellido_Materno,
+        Correo,
+        Telefono,
+        Id_Puesto,
+        Id_Departamento,
+        Id_Tipo_Usuario
+        FROM empleados
+        WHERE Id_Empleado = ?
     `,[Number(idEmpleado)]);
 
   return rows;

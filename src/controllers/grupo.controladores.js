@@ -253,33 +253,16 @@ export const obtenerPuestos = async (req, res) => {
 };
 
 
-// ===============================
-// OBTENER PUESTO Y DEPARTAMENTO
-// DE UN EMPLEADO
-// ===============================
-export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
+export const obtenerTiposUsuario = async (req, res) => {
 
   try {
 
-    const { id } = req.body; //checar para que sea params
-
-    if (!validar.esEnteroPositivo(id)) {
-      return res.status(400).json({
-        message: "El id debe ser un número entero positivo"
-      });
-    }
-
-    const resultado = await grupoModelo.obtenerPuestoDepartamentoEmpleado(id);
-
-    if (resultado.length === 0) {
-      return res.status(404).json({
-        message: "Empleado no encontrado"
-      });
-    }
+    const resultado = await grupoModelo.obtenerTiposUsuario();
 
     res.status(200).json({
-      message: "Información obtenida correctamente",
-      data: resultado[0]
+      message: "Tipos de usuario obtenidos correctamente",
+      total: resultado.length,
+      data: resultado
     });
 
   } catch (error) {
@@ -288,6 +271,41 @@ export const obtenerPuestoDepartamentoEmpleado = async (req, res) => {
 
 };
 
+
+// ===============================
+// OBTENER PUESTO Y DEPARTAMENTO
+// DE UN EMPLEADO
+// ===============================
+export const obtenerEmpleadoValue = async (req, res) => {
+
+  try {
+
+    const { id } = req.params;
+
+    if (!validar.esEnteroPositivo(id)) {
+      return res.status(400).json({
+        message: "El id debe ser un número entero positivo"
+      });
+    }
+
+    const resultado = await grupoModelo.obtenerEmpleadoValue(id);
+
+    if (resultado.length === 0) {
+      return res.status(404).json({
+        message: "Empleado no encontrado"
+      });
+    }
+
+    res.status(200).json({
+      message: "Empleado obtenido correctamente",
+      data: resultado[0]
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+
+};
 
 export const reporteEmpleado = async (req, res) => {
 

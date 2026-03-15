@@ -10,7 +10,7 @@ router.put('/:id',  verificarToken, ctrl.actualizarEmpleado);
 router.delete('/:id',verificarToken, ctrl.borrarEmpleado);
 //router.post('/', ctrl.crearEmpleado);
 router.post('/login', ctrl.login);
-router.post('/register', ctrl.crearEmpleado);
+router.post('/register', verificarToken, ctrl.crearEmpleado);
 
 
 
@@ -18,7 +18,9 @@ router.get('/departamentos', verificarToken, ctrl.obtenerDepartamentos);
 
 router.get('/puestos', verificarToken, ctrl.obtenerPuestos);
 
-router.post('/empleado-info', verificarToken, ctrl.obtenerPuestoDepartamentoEmpleado);
+router.get('/tipos-usuario', verificarToken, ctrl.obtenerTiposUsuario);
+
+router.get('/empleado-value/:id', verificarToken, ctrl.obtenerEmpleadoValue);
 
 router.get('/empleados/:id', verificarToken, ctrl.obtenerEmpleadoPorId);
 
