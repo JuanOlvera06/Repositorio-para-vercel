@@ -27,3 +27,18 @@ export const obtenerTerminosActivo = async () => {
         throw error;
     }
 };
+
+
+export const actualizarTerminos = async (titulo, contenido) => {
+    try {
+        const [result] = await db.query(`
+            UPDATE terminos_condiciones 
+            SET titulo = ?, contenido = ? 
+            WHERE activo = 1
+        `, [titulo, contenido]);
+        
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
