@@ -103,7 +103,17 @@ export const actualizarEmpleado = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const {  nombre,  apaterno,  amaterno,  correo,  telefono,  contrasena,  tipo_usuario,  departamento,  puesto,} = req.body;
+    const {
+      nombre,
+      apaterno,
+      amaterno,
+      correo,
+      telefono,
+      contrasena,
+      tipo_usuario,
+      departamento,
+      puesto,
+    } = req.body;
 
     // Validar ID
     if (!id || isNaN(Number(id)) || Number(id) <= 0) {
@@ -112,8 +122,8 @@ export const actualizarEmpleado = async (req, res) => {
       });
     }
 
-    // Validación básica
-     if (
+    // Validación de campos obligatorios
+    if (
       !validar.esTextoValido(nombre) ||
       !validar.esTextoValido(apaterno) ||
       !validar.esTextoValido(amaterno) ||
@@ -124,12 +134,23 @@ export const actualizarEmpleado = async (req, res) => {
       !validar.esEnteroPositivo(puesto)
     ) {
       return res.status(400).json({
-        message: "Todos los campos exepto la contraseña son obligatorios y deben ser válidos",
+        message: "Todos los campos excepto la contraseña son obligatorios y deben ser válidos",
       });
     }
-    if (contrasena && !validar.esContrasenaValida(contrasena)) {
-  return res.status(400).json({ message: "Contraseña inválida" });
-}
+
+    let passwordHash = null;
+
+    // Si el usuario manda contraseña nueva
+    if (contrasena) {
+      if (!validar.esContrasenaValida(contrasena)) {
+        return res.status(400).json({
+          message: "Contraseña inválida",
+        });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      passwordHash = await bcrypt.hash(contrasena, salt);
+    }
 
     const empleadoActualizado = await grupoModelo.actualizarEmpleado({
       id,
@@ -138,13 +159,13 @@ export const actualizarEmpleado = async (req, res) => {
       amaterno,
       correo,
       telefono,
-      contrasena,
+      contrasena: passwordHash,
       tipo_usuario,
       departamento,
       puesto,
     });
 
-    // Verificar si existe
+    // Verificar si existe el empleado
     if (empleadoActualizado.affectedRows === 0) {
       return res.status(404).json({
         message: "Empleado no encontrado",
@@ -155,8 +176,11 @@ export const actualizarEmpleado = async (req, res) => {
       message: "Empleado actualizado correctamente",
       data: empleadoActualizado,
     });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+    });
   }
 };
 
