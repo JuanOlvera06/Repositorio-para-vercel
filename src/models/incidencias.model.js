@@ -132,3 +132,63 @@ export const obtenerFaltasDepartamento = async (mes, anio, idDepartamento) => {
     }
 
 }
+
+
+export const obtenerEmpleadosPublicos = async (limit, start) => {
+
+  const [rows] = await db.query(`
+      SELECT 
+          e.Id_Empleado,
+          CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) AS Nombre_Completo,
+          d.Id_Departamento,
+          d.Departamento,
+          p.Puesto
+      FROM empleados e
+      INNER JOIN departamentos d 
+          ON e.Id_Departamento = d.Id_Departamento
+      INNER JOIN puestos p 
+          ON e.Id_Puesto = p.Id_Puesto
+      ORDER BY e.Id_Empleado ASC
+      LIMIT ? OFFSET ?
+  `, [Number(limit), Number(start)]);
+
+  return rows;
+
+};
+
+
+export const obtenerDepartamentosPublicos = async () => {
+
+  const [rows] = await db.query(`
+        SELECT 
+            Id_Departamento,
+            Departamento
+        FROM departamentos
+  `);
+
+  return rows;
+};
+
+
+export const buscarEmpleadoPorNombre = async (texto, limit, start) => {
+
+  const [rows] = await db.query(`
+      SELECT 
+          e.Id_Empleado,
+          CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) AS Nombre_Completo,
+          d.Id_Departamento,
+          d.Departamento,
+          p.Puesto
+      FROM empleados e
+      INNER JOIN departamentos d 
+          ON e.Id_Departamento = d.Id_Departamento
+      INNER JOIN puestos p 
+          ON e.Id_Puesto = p.Id_Puesto
+      WHERE CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) LIKE ?
+      ORDER BY e.Id_Empleado ASC
+      LIMIT ? OFFSET ?
+  `, [`%${texto}%`, Number(limit), Number(start)]);
+
+  return rows;
+
+};
