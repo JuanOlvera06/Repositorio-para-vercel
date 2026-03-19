@@ -28,14 +28,6 @@ router.get('/reporte-empleado', verificarToken, ctrl.reporteEmpleado);
 
 router.get('/reporte-departamento', verificarToken, ctrl.reporteDepartamento);
 
-// NUEVOS ENDPOINTS
 
-// POR MES
-router.post('/faltas/mes/empleado', ctrl.faltasMesEmpleado)
-router.post('/faltas/mes/departamento', ctrl.faltasMesDepartamento)
-
-// POR SEMANA (ULTIMOS 2 MESES)
-router.post('/faltas/semana/empleado', ctrl.faltasSemanaEmpleado)
-router.post('/faltas/semana/departamento', ctrl.faltasSemanaDepartamento)
 
 export default router;

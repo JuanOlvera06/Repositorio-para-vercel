@@ -16,4 +16,14 @@ router.get('/empleados', ctrl.obtenerEmpleadosPublicos);
 // ENDPOINT PUBLICO - BUSQUEDA POR NOMBRE
 router.get('/empleados/buscar', ctrl.buscarEmpleadoPorNombre);
 
+// NUEVOS ENDPOINTS
+
+// POR MES
+router.post('/faltas/mes/empleado', ctrl.faltasMesEmpleado)
+router.post('/faltas/mes/departamento', ctrl.faltasMesDepartamento)
+
+// POR SEMANA (ULTIMOS 2 MESES)
+router.post('/faltas/semana/empleado', ctrl.faltasSemanaEmpleado)
+router.post('/faltas/semana/departamento', ctrl.faltasSemanaDepartamento)
+
 export default router;
