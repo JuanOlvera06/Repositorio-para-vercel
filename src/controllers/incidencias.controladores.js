@@ -155,3 +155,45 @@ export const buscarEmpleadoPorNombre = async (req, res) => {
   }
 
 };
+
+
+
+export const faltasMesEmpleado = async (req, res) => {
+  try {
+    const { anio, idEmpleado } = req.body
+    const data = await incidencias.obtenerFaltasPorMesEmpleado(anio, idEmpleado)
+    res.json(data)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+}
+
+export const faltasMesDepartamento = async (req, res) => {
+  try {
+    const { anio, idDepartamento } = req.body
+    const data = await incidencias.obtenerFaltasPorMesDepartamento(anio, idDepartamento)
+    res.json(data)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+}
+
+export const faltasSemanaEmpleado = async (req, res) => {
+  try {
+    const { mes, anio, idEmpleado } = req.body
+    const data = await incidencias.obtenerFaltasSemanalesEmpleado(mes, anio, idEmpleado)
+    res.json(data)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+}
+
+export const faltasSemanaDepartamento = async (req, res) => {
+  try {
+    const { mes, anio, idDepartamento } = req.body
+    const data = await incidencias.obtenerFaltasSemanalesDepartamento(mes, anio, idDepartamento)
+    res.json(data)
+  } catch (e) {
+    res.status(500).json({ error: e.message })
+  }
+}

@@ -237,3 +237,114 @@ export const buscarEmpleadoPorNombre = async (texto, limit, start) => {
   return rows;
 
 };
+
+
+
+export const obtenerFaltasPorMesEmpleado = async (anio, idEmpleado) => {
+
+    const [rows] = await db.query(`
+        SELECT 
+            MONTH(Fecha) - 1 AS mes,
+            COUNT(*) AS faltas
+        FROM incidencias
+        WHERE Id_Tipo_Incidencia = 1
+        AND Id_Empleado = ?
+        AND YEAR(Fecha) = ?
+        GROUP BY MONTH(Fecha)
+        ORDER BY mes
+    `, [idEmpleado, anio])
+
+    const mesActual = new Date().getMonth()
+    let resultado = new Array(mesActual + 1).fill(0)
+
+    rows.forEach(r => {
+        resultado[r.mes] = r.faltas
+    })
+
+    return resultado
+}
+
+
+
+export const obtenerFaltasPorMesDepartamento = async (anio, idDepartamento) => {
+
+    const [rows] = await db.query(`
+        SELECT 
+            MONTH(i.Fecha) - 1 AS mes,
+            COUNT(*) AS faltas
+        FROM incidencias i
+        INNER JOIN empleados e 
+        ON i.Id_Empleado = e.Id_Empleado
+        WHERE i.Id_Tipo_Incidencia = 1
+        AND e.Id_Departamento = ?
+        AND YEAR(i.Fecha) = ?
+        GROUP BY MONTH(i.Fecha)
+        ORDER BY mes
+    `, [idDepartamento, anio])
+
+    const mesActual = new Date().getMonth()
+    let resultado = new Array(mesActual + 1).fill(0)
+
+    rows.forEach(r => {
+        resultado[r.mes] = r.faltas
+    })
+
+    return resultado
+}
+
+
+
+export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
+
+    const f = calcularFechas(mes, anio)
+
+    const [rows] = await db.query(`
+        SELECT 
+            FLOOR(DATEDIFF(Fecha, ?) / 7) AS semana,
+            COUNT(*) AS faltas
+        FROM incidencias
+        WHERE Id_Tipo_Incidencia = 1
+        AND Id_Empleado = ?
+        AND Fecha BETWEEN ? AND ?
+        GROUP BY semana
+        ORDER BY semana
+    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mes1Fin])
+
+    // Máximo posible (8 semanas aprox)
+    let resultado = new Array(10).fill(0)
+
+    rows.forEach(r => {
+        resultado[r.semana] = r.faltas
+    })
+
+    return resultado
+}
+
+
+
+export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamento) => {
+
+    const f = calcularFechas(mes, anio)
+
+    const [rows] = await db.query(`
+        SELECT 
+            FLOOR(DATEDIFF(i.Fecha, ?) / 7) AS semana,
+            COUNT(*) AS faltas
+        FROM incidencias i
+        INNER JOIN empleados e 
+        ON i.Id_Empleado = e.Id_Empleado
+        WHERE i.Id_Tipo_Incidencia = 1
+        AND e.Id_Departamento = ?
+        AND i.Fecha BETWEEN ? AND ?
+        GROUP BY semana
+        ORDER BY semana
+    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mes1Fin])
+
+    let resultado = new Array(10).fill(0)
+
+    rows.forEach(r => {
+        resultado[r.semana] = r.faltas
+    })
+
+    return resultado
+}
