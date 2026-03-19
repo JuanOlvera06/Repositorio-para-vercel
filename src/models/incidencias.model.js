@@ -142,7 +142,27 @@ export const obtenerEmpleadosPublicos = async (limit, start) => {
           CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) AS Nombre_Completo,
           d.Id_Departamento,
           d.Departamento,
-          p.Puesto
+          p.Puesto,
+
+          -- FALTAS DEL MES ACTUAL
+          (
+            SELECT COUNT(*)
+            FROM incidencias i
+            WHERE i.Id_Tipo_Incidencia = 1
+            AND i.Id_Empleado = e.Id_Empleado
+            AND MONTH(i.Fecha) = MONTH(CURDATE())
+            AND YEAR(i.Fecha) = YEAR(CURDATE())
+          ) AS faltas_mes_actual,
+
+          -- FALTAS ACUMULADAS DEL AÑO
+          (
+            SELECT COUNT(*)
+            FROM incidencias i
+            WHERE i.Id_Tipo_Incidencia = 1
+            AND i.Id_Empleado = e.Id_Empleado
+            AND YEAR(i.Fecha) = YEAR(CURDATE())
+          ) AS faltas_anio_actual
+
       FROM empleados e
       INNER JOIN departamentos d 
           ON e.Id_Departamento = d.Id_Departamento
@@ -161,12 +181,37 @@ export const obtenerDepartamentosPublicos = async () => {
 
   const [rows] = await db.query(`
         SELECT 
-            Id_Departamento,
-            Departamento
-        FROM departamentos
+            d.Id_Departamento,
+            d.Departamento,
+
+            -- FALTAS DEL MES ACTUAL
+            (
+              SELECT COUNT(*)
+              FROM incidencias i
+              INNER JOIN empleados e 
+                ON i.Id_Empleado = e.Id_Empleado
+              WHERE i.Id_Tipo_Incidencia = 1
+              AND e.Id_Departamento = d.Id_Departamento
+              AND MONTH(i.Fecha) = MONTH(CURDATE())
+              AND YEAR(i.Fecha) = YEAR(CURDATE())
+            ) AS faltas_mes_actual,
+
+            -- FALTAS ACUMULADAS DEL AÑO
+            (
+              SELECT COUNT(*)
+              FROM incidencias i
+              INNER JOIN empleados e 
+                ON i.Id_Empleado = e.Id_Empleado
+              WHERE i.Id_Tipo_Incidencia = 1
+              AND e.Id_Departamento = d.Id_Departamento
+              AND YEAR(i.Fecha) = YEAR(CURDATE())
+            ) AS faltas_anio_actual
+
+        FROM departamentos d
   `);
 
   return rows;
+
 };
 
 
