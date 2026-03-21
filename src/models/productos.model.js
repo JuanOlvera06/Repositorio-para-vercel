@@ -2,9 +2,18 @@ import db from '../config/db.js'
 
 export const obtenerProductos = async (limit = 10, start = 0) => {
   const [rows] = await db.query(
-    `SELECT p.id_producto, 
+    `SELECT p.id_producto,
+            p.id_categoria,
             p.nombre_producto, 
-            p.ImagenesProducto, 
+            p.ImagenesProducto,
+            p.unidad_medida,
+            p.calibre,
+            p.metros,
+            p.kg,
+            p.color,
+            p.ced,
+            p.ton,
+            p.cm,
             c.nombre_categoria
      FROM productos p
      LEFT JOIN categoria c 
@@ -26,21 +35,53 @@ export const crearProducto = async ({ id_categoria, nombre_producto, precio, uni
 }
 
 
-export const actualizarProducto = async ({  id_producto,  id_categoria,  nombre_producto,  precio,  unidad_medida,  calibre, metros,  kg,  color,  ced,  ton,  cm,  ImagenesProducto
+export const actualizarProducto = async ({  
+  id_producto,  
+  id_categoria,  
+  nombre_producto,  
+  precio,  
+  unidad_medida,  
+  calibre, 
+  metros,  
+  kg,  
+  color,  
+  ced,  
+  ton,  
+  cm,  
+  ImagenesProducto
 }) => {
 
   const [result] = await db.query(
     `UPDATE productos 
-     SET id_categoria = ?, nombre_producto = ?, precio = ?, unidad_medida = ?, 
-         calibre = ?, metros = ?, kg = ?, color = ?, ced = ?, ton = ?, cm = ?, ImagenesProducto = ?
+     SET id_categoria = ?, 
+         nombre_producto = ?, 
+         precio = ?, 
+         unidad_medida = ?, 
+         calibre = ?, 
+         metros = ?, 
+         kg = ?, 
+         color = ?, 
+         ced = ?, 
+         ton = ?, 
+         cm = ?, 
+         ImagenesProducto = ?
      WHERE id_producto = ?`,
-    [id_categoria, nombre_producto, precio, unidad_medida, calibre, metros, kg, color, ced, ton, cm, ImagenesProducto, id_producto]
+    [
+      id_categoria, 
+      nombre_producto, 
+      precio, 
+      unidad_medida, 
+      calibre, 
+      metros, 
+      kg, 
+      color, 
+      ced, 
+      ton, 
+      cm, 
+      ImagenesProducto, 
+      id_producto 
+    ]
   );
-
-  //return {
-   // id: id_producto,
-   // affectedRows: result.affectedRows
-  //};
 
    return {
     id_producto,
@@ -56,17 +97,6 @@ export const actualizarProducto = async ({  id_producto,  id_categoria,  nombre_
     ton,
     cm,
     ImagenesProducto,
-    affectedRows: result.affectedRows
-  };
-}
-
-export const eliminarProducto = async (id_producto) => {
-  const [result] = await db.query(
-    `DELETE FROM productos WHERE id_producto = ?`,
-    [id_producto]
-  );
-  return {
-    id: id_producto,
     affectedRows: result.affectedRows
   };
 }
