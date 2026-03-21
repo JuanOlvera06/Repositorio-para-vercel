@@ -7,7 +7,7 @@ router.get('/', ctrl.obtenerProductos);
 router.post('/', ctrl.crearProducto);
 router.put('/:id', ctrl.actualizarProducto);
 router.delete('/:id', ctrl.borrarProducto);
-
+router.get('/:id', ctrl.obtenerProductoPorId);
 
 router.get('/categoria/:id', ctrl.obtenerProductosPorCategoria);
 

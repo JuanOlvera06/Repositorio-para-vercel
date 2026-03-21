@@ -1,5 +1,5 @@
 import * as productoModelo from "../models/productos.model.js";
-
+import db from '../config/db.js';
 export const obtenerProductos = async (req, res) => {
   try {
     let { limit, start } = req.query;
@@ -149,18 +149,49 @@ export const actualizarProducto = async (req, res) => {
 export const obtenerProductoPorId = async (req, res) => {
   try {
     const { id } = req.params;
-    const resultado = await productoModelo.obtenerProductoPorId(id); // Debes tener esto en tu modelo
+    const idNum = parseInt(id);
 
-    if (!resultado) {
+    // Validación básica del ID
+    if (isNaN(idNum) || idNum <= 0) {
+      return res.status(400).json({ message: "ID de producto inválido" });
+    }
+
+    // Consulta segura
+    const [rows] = await db.query(
+      `SELECT 
+         id_producto,
+         id_categoria,
+         nombre_producto,
+         precio,
+         unidad_medida,
+         calibre,
+         metros,
+         kg,
+         cm,
+         ton,
+         ced,
+         color,
+         ImagenesProducto
+       FROM productos 
+       WHERE id_producto = ?`,
+      [idNum]
+    );
+
+    if (rows.length === 0) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
 
     res.status(200).json({
-      message: "Producto obtenido",
-      data: resultado // Aquí debe venir solo el objeto del producto
+      message: "Producto obtenido correctamente",
+      data: rows[0]  // devuelve TODOS los campos
     });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error en obtenerProductoPorId:", error);
+    res.status(500).json({ 
+      message: "Error interno al obtener el producto",
+      error: error.message 
+    });
   }
 };
 
