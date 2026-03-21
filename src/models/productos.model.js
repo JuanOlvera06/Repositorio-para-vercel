@@ -101,6 +101,17 @@ export const actualizarProducto = async ({
   };
 }
 
+export const eliminarProducto = async (id_producto) => {
+  const [result] = await db.query(
+    `DELETE FROM productos WHERE id_producto = ?`,
+    [id_producto]
+  );
+  return {
+    id: id_producto,
+    affectedRows: result.affectedRows
+  };
+}
+
 // Obtiene solo los productos de una categoría específica
 export const obtenerProductosPorCategoria = async (idCategoria) => {
   const [rows] = await db.query(`
