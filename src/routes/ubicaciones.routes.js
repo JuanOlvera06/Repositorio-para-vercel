@@ -6,8 +6,8 @@ import { verificarToken } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.get("/",verificarToken,ctrl.getUbicacionesController);
-router.get("/:id", ctrl.getUbicacionByIdController);
-router.post("/", ctrl.crearubicacion);
+router.get("/:id", verificarToken,ctrl.getUbicacionByIdController);
+router.post("/", verificarToken,ctrl.crearubicacion);
 router.put("/:id",verificarToken,ctrl.actualizarubi);
 router.delete("/:id", verificarToken, ctrl.eliminarubi);
 
