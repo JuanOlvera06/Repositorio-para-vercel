@@ -197,3 +197,32 @@ export const faltasSemanaDepartamento = async (req, res) => {
     res.status(500).json({ error: e.message })
   }
 }
+
+// FALTAS POR TODOS LOS DEPARTAMENTOS (GENERAL)
+export const faltasMesDepartamentosGeneral = async (req, res) => {
+  try {
+
+    const datos = await incidencias.faltasMesDepartamentosGeneral();
+
+    res.status(200).json(datos);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+// FALTAS POR EMPLEADOS DE UN DEPARTAMENTO (RECIBE NOMBRE)
+export const faltasMesDepartamentoPorNombre = async (req, res) => {
+  try {
+
+    const { departamento } = req.query; // ejemplo: ?departamento=Administracion
+
+    const datos = await incidencias.faltasMesDepartamentoPorNombre(departamento);
+
+    res.status(200).json(datos);
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

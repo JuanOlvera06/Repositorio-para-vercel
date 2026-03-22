@@ -348,3 +348,66 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
 
     return resultado
 }
+
+
+
+const obtenerInicioMesActual = () => {
+
+    const hoy = new Date();
+
+    // último día del mes anterior
+    const ultimoDiaMesAnterior = new Date(hoy.getFullYear(), hoy.getMonth(), 0);
+
+    return ultimoDiaMesAnterior;
+}
+
+
+
+export const faltasMesDepartamentosGeneral = async () => {
+
+    const fecha = obtenerInicioMesActual();
+
+    const [rows] = await db.query(`
+        SELECT 
+            departamentos.Id_Departamento,
+            departamentos.Departamento,
+            COUNT(incidencias.Id_Incidencia) AS TotalFaltas
+        FROM empleados
+        INNER JOIN departamentos 
+            ON empleados.Id_Departamento = departamentos.Id_Departamento
+        LEFT JOIN incidencias 
+            ON empleados.Id_Empleado = incidencias.Id_Empleado
+            AND incidencias.Id_Tipo_Incidencia = 1
+            AND incidencias.Fecha > ?
+        GROUP BY 
+            departamentos.Id_Departamento,
+            departamentos.Departamento
+        ORDER BY TotalFaltas DESC;
+    `, [fecha]);
+
+    return rows;
+};
+
+export const faltasMesDepartamentoPorNombre = async (departamento) => {
+
+    const fecha = obtenerInicioMesActual();
+
+    const [rows] = await db.query(`
+        SELECT 
+            empleados.Id_Empleado,
+            empleados.Nombre,
+            COUNT(incidencias.Id_Incidencia) AS TotalFaltas
+        FROM empleados
+        INNER JOIN departamentos 
+            ON empleados.Id_Departamento = departamentos.Id_Departamento
+        LEFT JOIN incidencias 
+            ON empleados.Id_Empleado = incidencias.Id_Empleado
+            AND incidencias.Id_Tipo_Incidencia = 1
+            AND incidencias.Fecha > ?
+        WHERE departamentos.Departamento = ?
+        GROUP BY empleados.Id_Empleado, empleados.Nombre
+        ORDER BY TotalFaltas DESC;
+    `, [fecha, departamento]);
+
+    return rows;
+};

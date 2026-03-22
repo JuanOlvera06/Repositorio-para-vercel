@@ -26,4 +26,8 @@ router.post('/faltas/mes/departamento', ctrl.faltasMesDepartamento)
 router.post('/faltas/semana/empleado', ctrl.faltasSemanaEmpleado)
 router.post('/faltas/semana/departamento', ctrl.faltasSemanaDepartamento)
 
+// NUEVOS ENDPOINTS MES ACTUAL AUTOMATICO
+router.get('/faltas/mes/departamentos', ctrl.faltasMesDepartamentosGeneral)
+router.get('/faltas/mes/departamento/empleados', ctrl.faltasMesDepartamentoPorNombre)
+
 export default router;
