@@ -222,6 +222,8 @@ export const buscarEmpleadoPorNombre = async (texto, limit, start) => {
           e.Id_Empleado,
           CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) AS Nombre_Completo,
           d.Id_Departamento,
+              e.Correo,
+    e.Telefono,
           d.Departamento,
           p.Puesto
       FROM empleados e
