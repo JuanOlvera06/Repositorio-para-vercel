@@ -7,7 +7,7 @@ const router = Router();
 //si
 // Ruta protegida (solo usuarios autenticados)
 router.get('/' , ctrl.getContactoController);
-router.put('/',  ctrl.updateContactoController);
+router.put('/:_id',  ctrl.updateContactoController);
 
 export default router;
 
