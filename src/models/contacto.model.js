@@ -13,7 +13,7 @@ export const updateContacto = async (data) => {
 
   const [result] = await db.query(
     `UPDATE contacto_info 
-     SET dias=?, horario=?, telefono=?, whatsapp=?, correo=?, direccion=?, red1=?, red2=?, red3=? 
+     SET dias=?, horario=?, telefono=?, whatsapp=?, correo=?, direccion=?, red_social_1=?, red_social_2=?, red_social_3=?
      WHERE id = 1`,
     [dias, horario, telefono, whatsapp, correo, direccion, red1, red2, red3]
   );
