@@ -10,6 +10,7 @@ import terminosroutes from './routes/terminos.routes.js';
 import perfilRoutes from './routes/perfil.routes.js';
 import preguntasRoutes from './routes/preguntas.routes.js';
 import ubicacionesRoutes from './routes/ubicaciones.routes.js'
+import contactoRoutes from './routes/contacto.routes.js'
 
 //crear el objeto de express para nuestra alicacion 
 const app=express();
@@ -45,6 +46,8 @@ app.use('/api/perfil', perfilRoutes);
 app.use('/api/preguntas', preguntasRoutes);
 
 app.use('/api/ubicaciones', ubicacionesRoutes);
+
+app.use('/api/contacto', contactoRoutes);
 
 app.get('/', (req, res)=>{
     res.send("Esta es mi primera vez se gentil")
