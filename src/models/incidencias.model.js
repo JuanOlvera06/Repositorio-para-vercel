@@ -220,7 +220,7 @@ export const buscarEmpleadoPorNombre = async (texto, limit, start) => {
   const [rows] = await db.query(`
       SELECT 
           e.Id_Empleado,
-          CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) AS Nombre_Completo,
+          e.Nombre AS Nombre_Completo,
           d.Id_Departamento,
               e.Correo,
     e.Telefono,
