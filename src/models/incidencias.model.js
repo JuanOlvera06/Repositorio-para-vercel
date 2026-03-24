@@ -310,10 +310,15 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
         AND Fecha BETWEEN ? AND ?
         GROUP BY semana
         ORDER BY semana
-    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mes1Fin])
+    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mesActualFin]) // 👈 cambio aquí
 
-    // Máximo posible (8 semanas aprox)
-    let resultado = new Array(10).fill(0)
+    // 🔥 calcular cuántas semanas hay realmente
+    const maxSemana = rows.length > 0 
+        ? Math.max(...rows.map(r => r.semana)) 
+        : 0
+
+    // 🔥 arreglo dinámico (ya no fijo en 10)
+    let resultado = new Array(maxSemana + 1).fill(0)
 
     rows.forEach(r => {
         resultado[r.semana] = r.faltas
