@@ -345,9 +345,15 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
         AND i.Fecha BETWEEN ? AND ?
         GROUP BY semana
         ORDER BY semana
-    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mes1Fin])
+    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mesActualFin]) // 👈 aquí el cambio
 
-    let resultado = new Array(10).fill(0)
+    // 🔥 calcular semanas reales
+    const maxSemana = rows.length > 0 
+        ? Math.max(...rows.map(r => r.semana)) 
+        : 0
+
+    // 🔥 arreglo dinámico
+    let resultado = new Array(maxSemana + 1).fill(0)
 
     rows.forEach(r => {
         resultado[r.semana] = r.faltas
@@ -355,7 +361,6 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
 
     return resultado
 }
-
 
 
 const obtenerInicioMesActual = () => {
