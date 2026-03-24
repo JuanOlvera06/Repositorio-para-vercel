@@ -307,7 +307,7 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
         FROM incidencias
         WHERE Id_Tipo_Incidencia = 1
         AND Id_Empleado = ?
-        AND Fecha BETWEEN ? AND ?
+        AAND Fecha BETWEEN ? AND CURDATE()
         GROUP BY semana
         ORDER BY semana
     `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mes1Fin])
@@ -337,7 +337,7 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
         ON i.Id_Empleado = e.Id_Empleado
         WHERE i.Id_Tipo_Incidencia = 1
         AND e.Id_Departamento = ?
-        AND i.Fecha BETWEEN ? AND ?
+        AND Fecha BETWEEN ? AND CURDATE()
         GROUP BY semana
         ORDER BY semana
     `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mes1Fin])
