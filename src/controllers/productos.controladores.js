@@ -1,9 +1,4 @@
 import * as productoModelo from "../models/productos.model.js";
-import db from '../config/db.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import * as validar from '../utils/validaciones.js';
-import e from "express";
 
 export const obtenerProductos = async (req, res) => {
   try {
