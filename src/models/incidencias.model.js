@@ -220,8 +220,10 @@ export const buscarEmpleadoPorNombre = async (texto, limit, start) => {
   const [rows] = await db.query(`
       SELECT 
           e.Id_Empleado,
-          CONCAT(e.Nombre,' ',e.Apellido_Paterno,' ',e.Apellido_Materno) AS Nombre_Completo,
+          e.Nombre AS Nombre_Completo,
           d.Id_Departamento,
+              e.Correo,
+    e.Telefono,
           d.Departamento,
           p.Puesto
       FROM empleados e
@@ -308,10 +310,15 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
         AND Fecha BETWEEN ? AND ?
         GROUP BY semana
         ORDER BY semana
-    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mes1Fin])
+    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mesActualFin]) // 👈 cambio aquí
 
-    // Máximo posible (8 semanas aprox)
-    let resultado = new Array(10).fill(0)
+    // 🔥 calcular cuántas semanas hay realmente
+    const maxSemana = rows.length > 0 
+        ? Math.max(...rows.map(r => r.semana)) 
+        : 0
+
+    // 🔥 arreglo dinámico (ya no fijo en 10)
+    let resultado = new Array(maxSemana + 1).fill(0)
 
     rows.forEach(r => {
         resultado[r.semana] = r.faltas
@@ -338,9 +345,15 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
         AND i.Fecha BETWEEN ? AND ?
         GROUP BY semana
         ORDER BY semana
-    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mes1Fin])
+    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mesActualFin]) // 👈 aquí el cambio
 
-    let resultado = new Array(10).fill(0)
+    // 🔥 calcular semanas reales
+    const maxSemana = rows.length > 0 
+        ? Math.max(...rows.map(r => r.semana)) 
+        : 0
+
+    // 🔥 arreglo dinámico
+    let resultado = new Array(maxSemana + 1).fill(0)
 
     rows.forEach(r => {
         resultado[r.semana] = r.faltas
@@ -348,7 +361,6 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
 
     return resultado
 }
-
 
 
 const obtenerInicioMesActual = () => {
