@@ -17,6 +17,7 @@ router.get('/empleados', ctrl.obtenerEmpleadosPublicos);
 router.get('/empleados/buscar', ctrl.buscarEmpleadoPorNombre);
 
 // NUEVOS ENDPOINTS
+//che
 
 // POR MES
 router.post('/faltas/mes/empleado', ctrl.faltasMesEmpleado)
