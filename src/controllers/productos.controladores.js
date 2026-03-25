@@ -1,4 +1,6 @@
 import * as productoModelo from "../models/productos.model.js";
+import db from '../config/db.js';
+
 
 export const obtenerProductos = async (req, res) => {
   try {
