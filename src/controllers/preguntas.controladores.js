@@ -1,6 +1,8 @@
 import * as preguntasModelo from '../models/preguntas.model.js';
-// Asegúrate de importar tus validaciones si las tienes
-// import * as validar from '../utils/validaciones.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import * as validar from '../utils/validaciones.js';
+import e from "express";
 
 export const obtenerPreguntas = async (req, res) => {
     try {
