@@ -1,6 +1,5 @@
 import * as preguntasModelo from '../models/preguntas.model.js';
-// Asegúrate de importar tus validaciones si las tienes
-// import * as validar from '../utils/validaciones.js';
+
 
 export const obtenerPreguntas = async (req, res) => {
     try {

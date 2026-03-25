@@ -1,5 +1,7 @@
 import * as productoModelo from "../models/productos.model.js";
 import db from '../config/db.js';
+
+
 export const obtenerProductos = async (req, res) => {
   try {
     let { limit, start } = req.query;
@@ -7,7 +9,6 @@ export const obtenerProductos = async (req, res) => {
 
     if (limit === undefined || limit === "") limit = "10"; //si es indefinido o vacio se asigna un valor por defecto
     if (start === undefined || start === "") start = "0"; //esto mas que nada por si el cliente no envia estos parametros, asi evitamos errores en la consulta a la base de datos
-    //nms la ia me autompletablos mns que pedo
 
     const limitNumber = parseInt(limit); //convertir a numero entero
     const startNumber = parseInt(start);
