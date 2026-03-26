@@ -295,7 +295,7 @@ export const obtenerFaltasPorMesDepartamento = async (anio, idDepartamento) => {
 }
 
 
-
+/*
 export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
 
     const f = calcularFechas(mes, anio)
@@ -310,14 +310,14 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
         AND Fecha BETWEEN ? AND ?
         GROUP BY semana
         ORDER BY semana
-    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mesActualFin]) // 👈 cambio aquí
+    `, [f.mes2Inicio, idEmpleado, f.mes2Inicio, f.mesActualFin]) //  cambio aquí
 
-    // 🔥 calcular cuántas semanas hay realmente
+    //  calcular cuántas semanas hay realmente
     const maxSemana = rows.length > 0 
         ? Math.max(...rows.map(r => r.semana)) 
         : 0
 
-    // 🔥 arreglo dinámico (ya no fijo en 10)
+    //  arreglo dinámico (ya no fijo en 10)
     let resultado = new Array(maxSemana + 1).fill(0)
 
     rows.forEach(r => {
@@ -326,8 +326,31 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
 
     return resultado
 }
+*/
+export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
 
+    const [rows] = await db.query(`
+        SELECT 
+            FLOOR((DAY(Fecha) - 1) / 7) AS semana,
+            COUNT(*) AS faltas
+        FROM incidencias
+        WHERE Id_Tipo_Incidencia = 1
+        AND Id_Empleado = ?
+        AND MONTH(Fecha) = ?
+        AND YEAR(Fecha) = ?
+        GROUP BY semana
+        ORDER BY semana
+    `, [idEmpleado, mes, anio])
 
+    //  SIEMPRE 5 SEMANAS (no rompe frontend)
+    let resultado = new Array(5).fill(0)
+
+    rows.forEach(r => {
+        resultado[r.semana] = r.faltas
+    })
+
+    return resultado
+}
 
 export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamento) => {
 
@@ -345,14 +368,14 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
         AND i.Fecha BETWEEN ? AND ?
         GROUP BY semana
         ORDER BY semana
-    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mesActualFin]) // 👈 aquí el cambio
+    `, [f.mes2Inicio, idDepartamento, f.mes2Inicio, f.mesActualFin]) 
 
-    // 🔥 calcular semanas reales
+    //  calcular semanas reales
     const maxSemana = rows.length > 0 
         ? Math.max(...rows.map(r => r.semana)) 
         : 0
 
-    // 🔥 arreglo dinámico
+    //  arreglo dinámico
     let resultado = new Array(maxSemana + 1).fill(0)
 
     rows.forEach(r => {
