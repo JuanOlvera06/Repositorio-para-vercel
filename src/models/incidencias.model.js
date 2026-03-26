@@ -327,26 +327,60 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
     return resultado
 }
 */
+
+
 export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
+
+    const f = calcularFechas(mes, anio)
 
     const [rows] = await db.query(`
         SELECT 
+            MONTH(Fecha) AS mes,
             FLOOR((DAY(Fecha) - 1) / 7) AS semana,
             COUNT(*) AS faltas
         FROM incidencias
         WHERE Id_Tipo_Incidencia = 1
         AND Id_Empleado = ?
-        AND MONTH(Fecha) = ?
-        AND YEAR(Fecha) = ?
-        GROUP BY semana
-        ORDER BY semana
-    `, [idEmpleado, mes, anio])
+        AND Fecha BETWEEN ? AND ?
+        GROUP BY mes, semana
+        ORDER BY mes, semana
+    `, [idEmpleado, f.mes2Inicio, f.mesActualFin])
 
-    //  SIEMPRE 5 SEMANAS (no rompe frontend)
-    let resultado = new Array(5).fill(0)
+    // 🔥 agrupar por mes
+    const mapa = {}
 
     rows.forEach(r => {
-        resultado[r.semana] = r.faltas
+        if (!mapa[r.mes]) {
+            mapa[r.mes] = []
+        }
+        mapa[r.mes][r.semana] = r.faltas
+    })
+
+    let resultado = []
+
+    // 🔥 recorrer los 3 meses
+    const meses = [mes - 2, mes - 1, mes]
+
+    meses.forEach(m => {
+
+        let semanasMes
+
+        // 👉 calcular semanas reales del mes
+        if (m === mes) {
+            // mes actual → depende del día actual
+            const hoy = new Date().getDate()
+            semanasMes = Math.ceil(hoy / 7)
+        } else {
+            // meses completos
+            const dias = new Date(anio, m, 0).getDate()
+            semanasMes = Math.ceil(dias / 7)
+        }
+
+        // llenar semanas
+        for (let i = 0; i < semanasMes; i++) {
+            resultado.push(mapa[m]?.[i] || 0)
+        }
+
     })
 
     return resultado
