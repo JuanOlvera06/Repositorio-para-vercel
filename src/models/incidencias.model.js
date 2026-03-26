@@ -346,7 +346,7 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
         ORDER BY mes, semana
     `, [idEmpleado, f.mes2Inicio, f.mesActualFin])
 
-    // 🔥 agrupar por mes
+    //  agrupar por mes
     const mapa = {}
 
     rows.forEach(r => {
@@ -358,14 +358,14 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
 
     let resultado = []
 
-    // 🔥 recorrer los 3 meses
+    //  recorrer los 3 meses
     const meses = [mes - 2, mes - 1, mes]
 
     meses.forEach(m => {
 
         let semanasMes
 
-        // 👉 calcular semanas reales del mes
+        //  calcular semanas reales del mes
         if (m === mes) {
             // mes actual → depende del día actual
             const hoy = new Date().getDate()
@@ -382,10 +382,10 @@ export const obtenerFaltasSemanalesEmpleado = async (mes, anio, idEmpleado) => {
         }
 
     })
-
     return resultado
 }
 
+/*
 export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamento) => {
 
     const f = calcularFechas(mes, anio)
@@ -414,6 +414,63 @@ export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamen
 
     rows.forEach(r => {
         resultado[r.semana] = r.faltas
+    })
+
+    return resultado
+}
+*/
+export const obtenerFaltasSemanalesDepartamento = async (mes, anio, idDepartamento) => {
+
+    const f = calcularFechas(mes, anio)
+
+    const [rows] = await db.query(`
+        SELECT 
+            MONTH(i.Fecha) AS mes,
+            FLOOR((DAY(i.Fecha) - 1) / 7) AS semana,
+            COUNT(*) AS faltas
+        FROM incidencias i
+        INNER JOIN empleados e 
+            ON i.Id_Empleado = e.Id_Empleado
+        WHERE i.Id_Tipo_Incidencia = 1
+        AND e.Id_Departamento = ?
+        AND i.Fecha BETWEEN ? AND ?
+        GROUP BY mes, semana
+        ORDER BY mes, semana
+    `, [idDepartamento, f.mes2Inicio, f.mesActualFin])
+
+    //  agrupar por mes
+    const mapa = {}
+
+    rows.forEach(r => {
+        if (!mapa[r.mes]) {
+            mapa[r.mes] = []
+        }
+        mapa[r.mes][r.semana] = r.faltas
+    })
+
+    let resultado = []
+
+    //  meses a recorrer
+    const meses = [mes - 2, mes - 1, mes]
+
+    meses.forEach(m => {
+
+        let semanasMes
+
+        if (m === mes) {
+            // mes actual → depende del día actual
+            const hoy = new Date().getDate()
+            semanasMes = Math.ceil(hoy / 7)
+        } else {
+            // meses completos
+            const dias = new Date(anio, m, 0).getDate()
+            semanasMes = Math.ceil(dias / 7)
+        }
+
+        for (let i = 0; i < semanasMes; i++) {
+            resultado.push(mapa[m]?.[i] || 0)
+        }
+
     })
 
     return resultado
