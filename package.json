@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node run ./src/app.js",
     "dev": "nodemon run ./src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,7 @@
     "mysql2": "^3.17.4"
   },
   "devDependencies": {
+    "jest": "^30.3.0",
     "nodemon": "^3.1.13"
   }
 }
