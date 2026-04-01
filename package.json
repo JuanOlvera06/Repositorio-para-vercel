@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node run ./src/app.js",
     "dev": "nodemon run ./src/app.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node -npm install @jest/globals --save-dev-experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [],
   "author": "",
