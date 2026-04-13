@@ -83,20 +83,11 @@ export const actualizarEmpleado = async ({
 
 // el echo de que una funcion sea asicnrona qqieme
 export const borrarEmpleado = async ({ id }) => {
-  try {
-    const [result] = await db.query(
-      `DELETE FROM empleados WHERE Id_Empleado=?`,
-      [id]
-    );
-    return { id, affectedRows: result.affectedRows  };
-    
-  } catch (error) {
-    if (error.errno === 1451) {
-      throw new Error("No se puede eliminar a este empleado porque ya tiene asistencias o incidencias registradas.");
-    }
-    
-    throw error;
-  }
+  const [result] = await db.query(
+    `DELETE FROM empleados WHERE Id_Empleado=?`,
+          [id]
+  );
+  return { id, affectedRows: result.affectedRows  };
 }
 
 // OBTENER USUARIO POR CORREO

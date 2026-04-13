@@ -216,18 +216,17 @@ export const login = async (req, res) => {
     try {
         const { correo, contrasena } = req.body;
         const usuario = await grupoModelo.findUsuarioByEmail(correo);
+
+        console.log("Usuario encontrado:", usuario);           // ← ver en logs de Vercel
+        console.log("Contraseña recibida:", contrasena);
+        console.log("Hash guardado en BD:", usuario?.Contrasena);
+
         if (!usuario) return res.status(401).json({ message: 'Credenciales inválidas' });
 
         const esValida = await bcrypt.compare(contrasena, usuario.Contrasena);
+        console.log("✅ bcrypt.compare resultado:", esValida);
+
         if (!esValida) return res.status(401).json({ message: 'Credenciales inválidas' });
-
-        const token = jwt.sign(
-            { id: usuario.Id_Empleado, email: usuario.Correo, rol: usuario.Id_Tipo_Usuario },
-            process.env.JWT_SECRET,
-            { expiresIn: '8h' }
-        );
-
-        res.json({ token, usuario: { id: usuario.Id_Empleado, nombre: `${usuario.Nombre} ${usuario.Apellido_Paterno} ${usuario.Apellido_Materno}`, rol: usuario.Id_Tipo_Usuario } });
     } catch (error) {
         res.status(500).json({ error: 'Error en el proceso de login' });
     }
@@ -377,3 +376,65 @@ export const reporteDepartamento = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 }
+/* ===============================
+   GOOGLE LOGIN
+   =============================== */
+
+import { OAuth2Client } from 'google-auth-library';
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleLogin = async (req, res) => {
+    try {
+        const { id_token } = req.body;
+        if (!id_token) {
+            return res.status(400).json({ message: 'Token de Google requerido' });
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken: id_token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        if (!payload || !payload.email || !payload.email_verified) {
+            return res.status(401).json({ message: 'Token de Google inválido o email no verificado' });
+        }
+
+        const email = payload.email;
+
+        const usuario = await grupoModelo.findUsuarioByEmail(email);
+        if (!usuario) {
+            return res.status(401).json({ 
+                message: 'Correo no registrado en nuestro sistema. Usa tu usuario y contraseña primero.' 
+            });
+        }
+
+        const token = jwt.sign(
+            { 
+                id: usuario.Id_Empleado, 
+                email: usuario.Correo, 
+                rol: usuario.Id_Tipo_Usuario 
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        const nombre = `${usuario.Nombre} ${usuario.Apellido_Paterno} ${usuario.Apellido_Materno}`;
+
+        res.json({ 
+            token, 
+            usuario: { 
+                id: usuario.Id_Empleado, 
+                nombre, 
+                rol: usuario.Id_Tipo_Usuario 
+            } 
+        });
+    } catch (error) {
+        console.error('Error en googleLogin:', error);
+        if (error.message?.includes('Invalid')) {
+            return res.status(401).json({ message: 'Token de Google no válido' });
+        }
+        res.status(500).json({ message: 'Error interno en login con Google' });
+    }
+};

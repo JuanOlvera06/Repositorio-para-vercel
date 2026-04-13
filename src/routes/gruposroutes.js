@@ -11,7 +11,8 @@ router.delete('/:id',verificarToken, ctrl.borrarEmpleado);
 //router.post('/', ctrl.crearEmpleado);
 router.post('/login', ctrl.login);
 router.post('/register', verificarToken, ctrl.crearEmpleado);
-
+router.post('/google-login', ctrl.googleLogin);/* para loguearse con google */
+/* SE DEBE INSTRALAR LA SIGUIENTE LIBRERIA: npm install google-auth-library */
 
 
 router.get('/departamentos', verificarToken, ctrl.obtenerDepartamentos);
